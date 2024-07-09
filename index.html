@@ -2,9 +2,54 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <title>My microCMS Page</title>
 </head>
- 
 <body>
-    Hello World！ Hello World！
+    <div id="content">Loading...</div>
+
+    <script>
+        // microCMS APIの設定
+        const BASE_URL = 'https://https://aoigv5qotf.microcms.io/api/v1/';
+        const API_KEY = 'BL0dK3TwJd9k5iTsjzlHamdu0afsRPUCfAPg';
+
+        // microCMS APIからデータを取得する関数
+        async function fetchData() {
+            try {
+                const response = await fetch(`${BASE_URL}/posts`, {
+                    headers: {
+                        'X-API-KEY': API_KEY
+                    }
+                });
+                const data = await response.json();
+                return data.contents;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return [];
+            }
+        }
+
+        // データをページに表示する関数
+        async function displayData() {
+            const posts = await fetchData();
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = '';
+            
+            if (posts.length > 0) {
+                posts.forEach(post => {
+                    const postElement = document.createElement('div');
+                    postElement.innerHTML = `
+                        <h2>${post.title}</h2>
+                        <p>${post.content}</p>
+                    `;
+                    contentDiv.appendChild(postElement);
+                });
+            } else {
+                contentDiv.innerHTML = 'No posts found';
+            }
+        }
+
+        // ページが読み込まれたときにデータを表示
+        window.onload = displayData;
+    </script>
 </body>
 </html>
