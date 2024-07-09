@@ -71,7 +71,7 @@
                     const newsElement = document.createElement('div');
                     newsElement.className = 'news-item';
                     newsElement.innerHTML = `
-                        <h2>${newsItem.title || 'No Title'}</h2>
+                        <h2><a href="news-detail.html?id=${newsItem.id}">${newsItem.title || 'No Title'}</a></h2>
                         <p>${newsItem.content.split('\n')[0] || 'No Content'}</p>
                         <p><small>Published on: ${new Date(newsItem.publishedAt).toLocaleDateString()}</small></p>
                     `;
