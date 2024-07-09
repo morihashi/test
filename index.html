@@ -34,13 +34,15 @@
             const posts = await fetchData();
             const contentDiv = document.getElementById('content');
             contentDiv.innerHTML = '';
-            
-            if (posts.length > 0) {
+
+            if (posts && posts.length > 0) {
                 posts.forEach(post => {
                     const postElement = document.createElement('div');
+                    console.log(post); // デバッグ用のログ
                     postElement.innerHTML = `
-                        <h2>${post.name}</h2>
-                        <p>${post.description}</p>
+                        <h2>${post.title || 'No Title'}</h2>
+                        <p>Created At: ${new Date(post.createdAt).toLocaleDateString()}</p>
+                        <p>Updated At: ${new Date(post.updatedAt).toLocaleDateString()}</p>
                     `;
                     contentDiv.appendChild(postElement);
                 });
