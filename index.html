@@ -12,6 +12,21 @@
         }
         .news-item {
             margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .news-item h2 {
+            font-size: 1.2em;
+            margin: 0;
+        }
+        .news-item p {
+            margin: 5px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .news-item small {
+            color: #666;
         }
     </style>
 </head>
@@ -50,12 +65,14 @@
             newsDiv.innerHTML = '';
 
             if (newsItems.length > 0) {
-                newsItems.forEach(newsItem => {
+                // 最新の3件を取得
+                const latestNews = newsItems.slice(0, 3);
+                latestNews.forEach(newsItem => {
                     const newsElement = document.createElement('div');
                     newsElement.className = 'news-item';
                     newsElement.innerHTML = `
                         <h2>${newsItem.title || 'No Title'}</h2>
-                        <p>${newsItem.content || 'No Content'}</p>
+                        <p>${newsItem.content.split('\n')[0] || 'No Content'}</p>
                         <p><small>Published on: ${new Date(newsItem.publishedAt).toLocaleDateString()}</small></p>
                     `;
                     newsDiv.appendChild(newsElement);
