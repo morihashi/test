@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>News Detail</title>
+    <style>
+        /* スタイルをここに追加できます */
+        #news-detail {
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>News Detail</h1>
+    <div id="news-detail">Loading news detail...</div>
+
+    <script>
+        // microCMS APIの設定
+        const BASE_URL = 'https://aoigv5qotf.microcms.io/api/v1';
+        const API_KEY = 'BL0dK3TwJd9k5iTsjzlHamdu0afsRPUCfAPg';
+
+        // URLパラメータからニュースIDを取得
+        const urlParams = new URLSearchParams(window.location.search);
+        const newsId = urlParams.get('id');
+
+        // microCMS APIからデータを取得する関数
+        async function fetchNewsDetail() {
+            try {
+                const response = await fetch(`${BASE_URL}/news/${newsId}`, {
+                    headers: {
+                        'X-API-KEY': API_KEY
+                    }
+                });
+                const data = await response.json();
+                console.log('Fetched data:', data); // デバッグ用のログ
+                return data;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return null;
+            }
+        }
+
+        // データをページに表示する関数
+        async function displayNewsDetail() {
+            const newsItem = await fetchNewsDetail();
+            const newsDetailDiv = document.getElementById('news-detail');
+            newsDetailDiv.innerHTML = '';
+
+            if (newsItem) {
+                newsDetailDiv.innerHTML = `
+                    <h2>${newsItem.title || 'No Title'}</h2>
+                    <p>${newsItem.content || 'No Content'}</p>
+                    <p><small>Published on: ${new Date(newsItem.publishedAt).toLocaleDateString()}</small></p>
+                `;
+            } else {
+                newsDetailDiv.innerHTML = 'News not found';
+            }
+        }
+
+        // ページが読み込まれたときにデータを表示
+        window.onload = displayNewsDetail;
+    </script>
+</body>
+</html>
